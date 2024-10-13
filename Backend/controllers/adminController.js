@@ -1,7 +1,8 @@
 // usaremos express.json, ya esta importado en el archivo server.js
-const fs = require('fs'); // Importamos el modulo fs para poder trabajar con archivos
+const fs = require("fs"); // Importamos el modulo fs para poder trabajar con archivos
+const XLSX = require('xlsx'); // Importamos la libreria xlsx para poder leer archivos excel
 
-// Variable para almacenar los datos de los profesores
+// Variable temporal para almacenar los datos de los profesores
 const profesores = [];
 
 exports.saludo = (req, res) => {
@@ -14,9 +15,11 @@ exports.upload = (req, res) => {
         return res.status(400).send({ message: "No se ha subido un archivo" });
     }
 
-    fs.readFile(req.file.path, 'utf8', (err, data) => {
+    fs.readFile(req.file.path, "utf8", (err, data) => {
         if (err) {
-            return res.status(500).send({ message: "Error al leer el archivo" });
+            return res
+                .status(500)
+                .send({ message: "Error al leer el archivo" });
         }
         try {
             const jsonData = JSON.parse(data);
@@ -24,18 +27,89 @@ exports.upload = (req, res) => {
                 profesores.push(profesor);
             });
             //console.log(profesores);
-            
+
             // Eliminar el archivo
             fs.unlink(req.file.path, (err) => {
                 if (err) {
-                    return res.status(500).send({ message: "Error al eliminar el archivo" });
+                    return res
+                        .status(500)
+                        .send({ message: "Error al eliminar el archivo" });
                 }
             });
 
             return res.send({ message: "Archivo procesado correctamente" });
         } catch (error) {
-            return res.status(400).send({ message: "Error al procesar el archivo" });
-            
+            return res
+                .status(400)
+                .send({ message: "Error al procesar el archivo" });
         }
     });
+};
+
+exports.update = (req, res) => {
+    // Obtenemos los datos del body y los parametros
+    const { nombre, correo, contrasenia } = req.body;
+    const codigo = req.params.codigo;
+
+    // Buscamos el profesor por el codigo
+    // const profesor = profesores.find((profesor) => profesor.codigo === codigo);
+    const profesorIndex = profesores.findIndex(
+        (profesor) => profesor.codigo === codigo
+    );
+
+    // Verificamos si el profesor existe
+    if (profesorIndex === -1){
+        return res.status(404).send({ message: "Profesor no encontrado" });
+    }
+    // Actualizamos los datos del profesor
+    profesores[profesorIndex].nombre = nombre;
+    profesores[profesorIndex].correo = correo;
+    profesores[profesorIndex].contrasenia = contrasenia;
+
+    //console.log(profesores);
+    return res.send({ message: "Profesor actualizado correctamente" });
+};
+exports.delete = (req, res) => {
+    // Obtenemos el codigo del profesor
+    const codigo = req.params.codigo;
+
+    // Buscamos el profesor por el codigo
+    const profesorIndex = profesores.findIndex((profesor) => profesor.codigo === codigo);
+
+    // Verificamos si el profesor existe
+    if (profesorIndex === -1) {
+        return res.status(404).send({ message: "Profesor no encontrado" });
+    }
+
+    // Eliminamos el profesor
+    profesores.splice(profesorIndex, 1);
+
+    //console.log(profesores);
+    return res.send({ message: "Profesor eliminado correctamente" });
+};
+
+exports.download = (req, res) => {
+    // Crear un libro de trabajo
+    const workbook = XLSX.utils.book_new();
+
+    // Crear una hoja de Calculo a partir de los datos
+    const worksheet = XLSX.utils.json_to_sheet(profesores);
+
+    // Agregar la hoja de calculo al libro de trabajo
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Profesores");
+
+    // Generar el archivo Excel en un buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+
+    // Configurar los headers de la respuesta
+    res.setHeader("Content-Disposition", "attachment; filename=profesores.xlsx");
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    
+    // Enviar el archivo Excel como respuesta
+    res.send(excelBuffer);
+};
+
+// Para poder obtener los profesores primero se debe subir un archivo con la informacion de los profesores (upload), no queremos que los datos persistan en la base de datos, por lo que los almacenamos en una variable temporal (profesores) y los retornamos en el endpoint obtenerprofesores.
+exports.obtenerprofesores = (req, res) => {
+    res.send(profesores);
 };
