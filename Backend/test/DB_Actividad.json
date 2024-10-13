@@ -1,0 +1,18 @@
+[
+    {
+        "nombre": "Tarea 1",
+        "descripcion": "Realizar la tarea 1",
+        "ponderacion": 10,
+        "profesor": "ECYS-P01",
+        "notas": [
+            {
+                "carnet": "201900001",
+                "nota": 100
+            },
+            {
+                "carnet": "202000002",
+                "nota": 80
+            }
+        ]
+    }
+]

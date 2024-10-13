@@ -1,0 +1,4 @@
+
+// exports.getMethod = (req, res) => {
+
+// };
