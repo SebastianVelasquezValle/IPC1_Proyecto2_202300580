@@ -9,8 +9,15 @@
     {
         "carnet": "202000002",
         "nombre": "Ingrid Perez",
-        "correo": "c@gmail.com",
+        "correo": "i@gmail.com",
         "genero": "f",
+        "contrasenia": "1234"
+    },
+    {
+        "carnet": "202000003",
+        "nombre": "Carla Juarez",
+        "correo": "c@gmail.com",
+        "genero": "m",
         "contrasenia": "1234"
     }
 ]
