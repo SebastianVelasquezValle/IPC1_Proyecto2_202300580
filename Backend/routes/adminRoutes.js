@@ -53,18 +53,18 @@ router.get('/students/download-students', adminController.downloadstudents);
 // ------> Endpoints para el curso
 
 // Endpoint para subir un archivos cursos
-//router.post('/course', upload.single('file'), adminController.courses);
+router.post('/course', upload.single('file'), adminController.courses);
 
 // este endpoint es para obtener los cursos solo es de prueba
-//router.get('/course', adminController.obtenercursos);
+router.get('/course', adminController.obtenercursos);
 
 // Endpoint para actualizar un archivo
-//router.put('/course/:codigo', adminController.updatecourses);
+router.put('/course/:codigo', adminController.updatecourses);
 
 // Endpoint para eliminar un archivo
-//router.delete('/course/:codigo', adminController.deletecourses);
+router.delete('/course/:codigo', adminController.deletecourses);
 
 // Endpoint para descargar un archivo
-//router.get('/course/download-courses', adminController.downloadcourses);
+router.get('/course/download-courses', adminController.downloadcourses);
 
 module.exports = router;

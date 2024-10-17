@@ -240,3 +240,132 @@ exports.downloadstudents = (req, res) => {
 exports.obtenerestudiantes = (req, res) => {
     res.send(estudiantes);
 };
+
+// ----> Curso <----
+
+// Variable temporal para almacenar los datos de los cursos
+const cursos = [];
+
+// recuerda: Por defecto todos contendrán 0 alumnos.
+// Pero a medida que se vayan inscribiendo alumnos, se deberá actualizar el valor de la propiedad alumnos.
+exports.courses = (req, res) => {
+    // Verificamos si se ha subido un archivo
+    if (!req.file) {
+        return res.status(400).send({ message: "No se ha subido un archivo" });
+    }
+
+    fs.readFile(req.file.path, "utf8", (err, data) => {
+        if (err) {
+            return res
+                .status(500)
+                .send({ message: "Error al leer el archivo" });
+        }
+        try {
+            const jsonData = JSON.parse(data);
+            jsonData.forEach((course) => {
+                // Verificar si el estudiante ya existe
+                const existe = cursos.some((e) => e.codigo === course.codigo);
+
+                // Si no existe, lo agregamos
+                if (!existe) {
+                    //cursos.push(course);
+                    cursos.push({
+                        ...course,
+                        alumnos: 0
+                    });
+                } else {
+                    // Si existe, actualizamos los datos
+                    const cursoindex = cursos.findIndex(
+                        (e) => e.codigo === course.codigo
+                    );
+                    //cursos[cursoindex] = course;
+                    // Mantener los datos del curso
+                    const alumnoActual = cursos[cursoindex].alumnos;
+
+                    // Actualizar los datos del curso
+                    cursos[cursoindex] = {
+                        ...course,
+                        alumnos: alumnoActual
+                    };
+                }
+            });
+            //console.log(cursos);
+            // Eliminar el archivo
+            fs.unlink(req.file.path, (err) => {
+                if (err) {
+                    return res
+                        .status(500)
+                        .send({ message: "Error al eliminar el archivo" });
+                }
+            });
+            return res.send({ message: "Archivo procesado correctamente" });
+        } catch (error) {
+            return res
+                .status(400)
+                .send({ message: "Error al procesar el archivo" });
+        }
+    });
+};
+
+exports.updatecourses = (req, res) => {
+    // Obtenemos los datos del body y los parametros
+    const { nombre, creditos, profesor } = req.body;
+    const codigo = req.params.codigo;
+
+    // Buscamos el curso por el codigo
+    const cursoindex = cursos.findIndex((curso) => curso.codigo === codigo);
+
+    // Verificamos si el curso existe
+    if (cursoindex === -1){
+        return res.status(404).send({ message: "Curso no encontrado" });
+    }
+    // Actualizamos los datos del curso
+    cursos[cursoindex].nombre = nombre;
+    cursos[cursoindex].creditos = creditos;
+    cursos[cursoindex].profesor = profesor;
+
+    return res.send({ message: "Curso actualizado correctamente" });
+};
+
+exports.deletecourses = (req, res) => {
+    // Obtenemos el codigo del curso
+    const codigo = req.params.codigo;
+
+    // Buscamos el curso por el codigo
+    const cursoindex = cursos.findIndex((curso) => curso.codigo === codigo);
+
+    // Verificamos si el curso existe
+    if (cursoindex === -1) {
+        return res.status(404).send({ message: "Curso no encontrado" });
+    }
+
+    // Eliminamos el curso
+    cursos.splice(cursoindex, 1);
+
+    return res.send({ message: "Curso eliminado correctamente" });
+};
+
+exports.downloadcourses = (req, res) => {
+    // Crear un libro de trabajo
+    const workbook = XLSX.utils.book_new();
+
+    // Crear una hoja de Calculo a partir de los datos
+    const worksheet = XLSX.utils.json_to_sheet(cursos);
+
+    // Agregar la hoja de calculo al libro de trabajo
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Cursos");
+
+    // Generar el archivo Excel en un buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+
+    // Configurar los headers de la respuesta
+    res.setHeader("Content-Disposition", "attachment; filename=cursos.xlsx");
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    
+    // Enviar el archivo Excel como respuesta
+    res.send(excelBuffer);
+};
+
+exports.obtenercursos = (req, res) => {
+    res.send(cursos);
+};
