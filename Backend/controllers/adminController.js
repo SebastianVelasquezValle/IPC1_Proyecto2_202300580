@@ -1,5 +1,4 @@
 // usaremos express.json, ya esta importado en el archivo server.js
-const e = require("express");
 const fs = require("fs"); // Importamos el modulo fs para poder trabajar con archivos
 const XLSX = require('xlsx'); // Importamos la libreria xlsx para poder leer archivos excel
 
@@ -248,6 +247,7 @@ const cursos = [];
 
 // recuerda: Por defecto todos contendrán 0 alumnos.
 // Pero a medida que se vayan inscribiendo alumnos, se deberá actualizar el valor de la propiedad alumnos.
+// Esta cantidad se aumentara en la funcion incrementarAlumnos (ya no esta en teacherController.js, ahora esta en adminController.js)
 exports.courses = (req, res) => {
     // Verificamos si se ha subido un archivo
     if (!req.file) {
@@ -369,3 +369,32 @@ exports.downloadcourses = (req, res) => {
 exports.obtenercursos = (req, res) => {
     res.send(cursos);
 };
+
+// Funcion para incrementar el numero de alumnos en un curso
+// esta funcion la colocaremos junto cuando hagamos la peticion de carga alumnos
+function incrementarAlumnos(codigo, cantidad)  {
+    // Ya no necesitamos el req y res, ya que no estamos manejando una peticion HTTP, esta funcion sera llamda en la que si sera una peticion HTTP
+    //const codigo = req.params.codigo;
+    //const cantidad = parseInt(req.body.cantidad);
+
+    // Buscamos el curso en el array 'cursos'
+    const curso = cursos.find((curso) => curso.codigo === codigo);
+
+    // Verificamos si el curso existe
+    if (!curso) {
+        return res.status(404).send({ message: "Curso no encontrado" });
+    }
+
+    // Incrementamos el numero de alumnos
+    curso.alumnos += cantidad;
+
+    // Enviamos la respuesta
+    console.log("Numero de alumnos incrementado correctamente");
+    return res.send({ message: "Numero de alumnos incrementado correctamente" });
+};
+
+// Exportamos las funciones
+exports.cursos = cursos; // Exportamos la variable cursos
+exports.estudiantes = estudiantes; // Exportamos la variable estudiantes
+exports.profesores = profesores; // Exportamos la variable profesores
+exports.incrementarAlumnos = incrementarAlumnos; // Exportamos la funcion incrementarAlumnos

@@ -4,7 +4,6 @@ const multer  = require('multer') // Importamos multer para poder subir archivos
 const upload = multer({ dest: 'uploads/' }) // Indicamos la carpeta donde se subiran los archivos
 
 // importamos los controladores 
-//const mainController = require('../controllers/mainController');
 const adminController = require('../controllers/adminController');
 
 //  ------> Endpoints de prueba general

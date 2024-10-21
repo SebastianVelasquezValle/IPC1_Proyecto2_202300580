@@ -3,6 +3,7 @@ const express = require('express'); // express
 const cors = require('cors'); 
 //const bodyParser = require('body-parser'); // ya no lo usamos gracias a express.json() se puede hacer lo mismo
 //const fs = require('fs'); // el fs solo aplica a este archivo, si lo usamos en otro archivo, debemos importarlo en ese archivo
+const auth = require('./routes/auth'); // middleware de autenticación
 const adminRouter = require('./routes/adminRoutes');
 //const studentRouter = require('./routes/studentRoutes');
 //const teacherRouter = require('./routes/teacherRoutes');
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
     res.send("Backend ejecutando correctamente");
 });
 // Endpoints de ejecución
-//app.use("/api", adminRouter); // este es para el login pero no sera un router, sera un middleware, despues lo veremos
+app.use("/api/login", auth); 
 app.use("/api/admin", adminRouter);
 //app.use("/api/student", studentRouter);
 //app.use("/api/teacher", teacherRouter);
