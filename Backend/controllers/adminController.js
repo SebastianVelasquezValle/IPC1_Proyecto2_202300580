@@ -372,29 +372,25 @@ exports.obtenercursos = (req, res) => {
 
 // Funcion para incrementar el numero de alumnos en un curso
 // esta funcion la colocaremos junto cuando hagamos la peticion de carga alumnos
-function incrementarAlumnos(codigo, cantidad)  {
-    // Ya no necesitamos el req y res, ya que no estamos manejando una peticion HTTP, esta funcion sera llamda en la que si sera una peticion HTTP
-    //const codigo = req.params.codigo;
-    //const cantidad = parseInt(req.body.cantidad);
+// Esta funcion toma en cuenta que cada profesor tiene un codigo de curso que no se repite entre los profesores
+// function incrementarAlumnos(codigoCurso, codigoProfesor,cantidad)  {
+//     // Buscamos el curso en el array 'cursos'
+//     const curso = cursos.find((curso) => curso.codigo === codigoCurso && curso.profesor === codigoProfesor);
 
-    // Buscamos el curso en el array 'cursos'
-    const curso = cursos.find((curso) => curso.codigo === codigo);
+//     // Verificamos si el curso existe
+//     if (!curso) {
+//         return res.status(404).send({ message: "Curso no encontrado" });
+//     }
 
-    // Verificamos si el curso existe
-    if (!curso) {
-        return res.status(404).send({ message: "Curso no encontrado" });
-    }
+//     // Incrementamos el numero de alumnos
+//     curso.alumnos += cantidad;
 
-    // Incrementamos el numero de alumnos
-    curso.alumnos += cantidad;
-
-    // Enviamos la respuesta
-    console.log("Numero de alumnos incrementado correctamente");
-    return res.send({ message: "Numero de alumnos incrementado correctamente" });
-};
+//     // Enviamos la respuesta
+//     console.log("Numero de alumnos incrementado correctamente");
+// };
 
 // Exportamos las funciones
 exports.cursos = cursos; // Exportamos la variable cursos
 exports.estudiantes = estudiantes; // Exportamos la variable estudiantes
 exports.profesores = profesores; // Exportamos la variable profesores
-exports.incrementarAlumnos = incrementarAlumnos; // Exportamos la funcion incrementarAlumnos
+//exports.incrementarAlumnos = incrementarAlumnos; // Exportamos la funcion incrementarAlumnos
