@@ -1,13 +1,13 @@
 [
     {
-        "codigo": "ECYS-P01",
+        "codigo": "ECYSP-P01",
         "nombre": "Juan Perez",
         "correo": "j@gmail.com",
         "genero": "m",
         "contrasenia": "1234"
     },
     {
-        "codigo": "ECYS-P02",
+        "codigo": "ECYSP-P02",
         "nombre": "Andrea Gonzalez",
         "correo": "a@gmail.com",
         "genero": "f",

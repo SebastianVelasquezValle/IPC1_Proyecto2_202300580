@@ -5,8 +5,8 @@ const cors = require('cors');
 //const fs = require('fs'); // el fs solo aplica a este archivo, si lo usamos en otro archivo, debemos importarlo en ese archivo
 const auth = require('./routes/auth'); // middleware de autenticación
 const adminRouter = require('./routes/adminRoutes');
-//const studentRouter = require('./routes/studentRoutes');
-//const teacherRouter = require('./routes/teacherRoutes');
+//const studentRouter = require('./routes/studenRoutes');
+const teacherRouter = require('./routes/teacherRoutes');
 
 const app = express();
 const PORT = 4000;
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 app.use("/api/login", auth); 
 app.use("/api/admin", adminRouter);
 //app.use("/api/student", studentRouter);
-//app.use("/api/teacher", teacherRouter);
+app.use("/api/teacher", teacherRouter);
 
 // Manejo de ruta cuando no se encuentre la ruta solicitada
 app.use((req, res) => {

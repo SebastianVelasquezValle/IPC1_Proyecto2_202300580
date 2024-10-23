@@ -310,7 +310,7 @@ exports.courses = (req, res) => {
 exports.updatecourses = (req, res) => {
     // Obtenemos los datos del body y los parametros
     const { nombre, creditos, profesor } = req.body;
-    const codigo = req.params.codigo;
+    const codigo = parseInt(req.params.codigo);
 
     // Buscamos el curso por el codigo
     const cursoindex = cursos.findIndex((curso) => curso.codigo === codigo);
@@ -329,7 +329,7 @@ exports.updatecourses = (req, res) => {
 
 exports.deletecourses = (req, res) => {
     // Obtenemos el codigo del curso
-    const codigo = req.params.codigo;
+    const codigo = parseInt(req.params.codigo);
 
     // Buscamos el curso por el codigo
     const cursoindex = cursos.findIndex((curso) => curso.codigo === codigo);
