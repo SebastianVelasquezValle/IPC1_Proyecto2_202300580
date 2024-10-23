@@ -23,7 +23,6 @@ function incrementarAlumnos(codigoCurso, codigoProfesor,cantidad)  {
     const curso = cursos.find((curso) => parseInt(curso.codigo) === parseInt(codigoCurso) && curso.profesor === codigoProfesor);
 
     //console.log(cursos);
-
     // Verificamos si el curso existe
     if (!curso) {
         //return res.status(404).send({ message: "Curso no encontrado" });
@@ -226,6 +225,19 @@ exports.uploadAlumnos = (req, res) => {
                         .send({ message: "Error al eliminar el archivo" });
                 }
             });
+
+            // Incrementamos el numero de alumnos del curso
+            let tamanio = 0;
+            //console.log(alumnosCarnet);
+            alumnosCarnet.forEach((alumno) => {
+                if (alumno.curso === codigoCourse && alumno.profesor === codigoProfesor) {
+                    tamanio += 1;
+                }
+            });
+
+            //console.log(tamanio);
+            incrementarAlumnos(codigoCourse, codigoProfesor, tamanio);
+
             return res.send({ message: "Archivo procesado correctamente" });
         } catch (error) {
             return res
@@ -257,34 +269,17 @@ exports.obteneralumnos = (req, res) => {
     });
 
     //console.log(alumnos);
-
-    // Incrementamos el numero de alumnos del curso
-    let tamanio = 0;
-    alumnos.forEach((alumno) => {
-        if (alumno.curso === codigoCourse && alumno.profesor === codigoProfesor) {
-            tamanio += 1;
-        }
-    });
-
-    //console.log(tamanio);
-
-    incrementarAlumnos(codigoCourse, codigoProfesor, tamanio);
-
-
     // Retornamos los alumnos
-
     res.status(200).send(alumnos);
 };
 
 // Esta funcion se encarga de sacar el promedio de las notas
 function promedio(nota) {
     const promedio = nota.reduce((a, b) => a + b, 0) / nota.length;
-
     // if (!Array.isArray(nota) || nota.length === 0) {
     //     return 0; // Si no es un array o esta vacio retornara 0
     // }
 
     //return promedio;
-
     return parseFloat(promedio.toFixed(2)); // Para que solo muestre 2 decimales
 }
