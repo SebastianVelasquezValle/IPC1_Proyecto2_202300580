@@ -15,7 +15,6 @@ exports.upload = (req, res) => {
     if (!req.file) {
         return res.status(400).send({ message: "No se ha subido un archivo" });
     }
-
     fs.readFile(req.file.path, "utf8", (err, data) => {
         if (err) {
             return res

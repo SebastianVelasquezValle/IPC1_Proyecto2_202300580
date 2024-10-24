@@ -12,16 +12,16 @@ router.get("/", (req, res) => {
 router.get('/teacher-saludo', teacherController.saludo); // Endpoint para verificar que el controlador funciona correctamente
 
 // Endpoints para el profesor 
-// le colocamos el codigo del profesor y codigo del curso para que sea mas facil identificarlo y buscarlo, excepto en las cargas de archivos
+// le colocamos el codigo del profesor y codigo del curso para que sea mas facil identificarlo y buscarlo
 
 // Endpoint para ver los cursos del profesor
 router.get('/home/:codigo', teacherController.obtenerCursos);
 
 // Endpoint para cargar las actividades del profesor
-router.post('/course/actividad', upload.single('file'), teacherController.uploadActvidades);
+router.post('/course/actividad/:codigoProfesor/:codigoCourse', upload.single('file'), teacherController.uploadActvidades);
 
 // Endpoint para obtener las actividades del profesor
-router.get('/course/actividad/:codigo', teacherController.obteneractividades);
+router.get('/course/actividad/:codigoProfesor/:codigoCourse', teacherController.obteneractividades);
 
 // Endpoint para obtener las actividades del profesor (con advertencia)(opcional)
 router.get('/course/actividad/:codigo/a', teacherController.obteneractividades_Advert);
@@ -31,5 +31,10 @@ router.post('/course/alumno/:codigoProfesor/:codigoCourse', upload.single('file'
 
 // Endpoint para obtener los alumnos del profesor
 router.get('/course/alumno/:codigoProfesor/:codigoCourse', teacherController.obteneralumnos);
+
+// Endpoint para obtener los alumnos que se encuentran inscritos en el curso
+// tambien mostrara el detalle de las actividades cargadas y los puntos acumulados
+//router.get('/course/alumno/:codigo/a', teacherController.obtenerAlumnosInscritos);
+
 
 module.exports = router;
