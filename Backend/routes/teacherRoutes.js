@@ -36,5 +36,8 @@ router.get('/course/alumno/:codigoProfesor/:codigoCourse', teacherController.obt
 // tambien mostrara el detalle de las actividades cargadas y los puntos acumulados
 //router.get('/course/alumno/:codigo/a', teacherController.obtenerAlumnosInscritos);
 
+// Endpoint para obtener los 5 mejores alumnos del curso y los 5 peores (esto es para los reportes)
+//router.get('/course/alumno/:codigoProfesor/:codigoCourse/top', teacherController.obtenerTopAlumnos);
+
 
 module.exports = router;
