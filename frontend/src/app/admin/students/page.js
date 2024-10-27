@@ -10,6 +10,7 @@ import {
     Stack,
     Modal,
     InputGroup,
+    Image,
 } from "react-bootstrap";
 import axiosInstance, {
     handleAxiosError,
@@ -39,15 +40,27 @@ export default function AdminStudents() {
                             className="me-2"
                             onClick={() => mostrarEstudiantes(item)} // item es la tarea
                         >
-                            Editar
+                            <Image
+                                aria-hidden
+                                src="/pencil.svg"
+                                alt="pen"
+                                width={18}
+                                height={18}
+                            />
                         </Button>
                         <Button
                             variant="outline-danger"
                             size="sm"
-                            className="me-2"
+                            className="me-2 justify-content-end"
                             onClick={() => eliminarEstudiantes(item.carnet)} // item.id es el id de la tarea
                         >
-                            Eliminar
+                            <Image
+                                aria-hidden
+                                src="/trash.svg"
+                                alt="trash"
+                                width={18}
+                                height={18}
+                            />
                         </Button>
                     </>
                 );

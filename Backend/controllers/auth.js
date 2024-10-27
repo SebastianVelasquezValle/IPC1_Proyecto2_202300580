@@ -20,7 +20,7 @@ exports.login = (req, res) => {
             .status(200)
             .send({
                 message: "Inicio de sesión exitoso",
-                usuario: { codigo: "admin", constrasenia: "admin", rol: "admin" },
+                usuario: { codigo: "admin", constrasenia: "admin"}, rol: "admin",
             });
     }
 
@@ -53,7 +53,7 @@ exports.login = (req, res) => {
     //res.status(200).send({ message: "Inicio de sesión exitoso", usuario: { codigo: usuario.carnet || usuario.codigo, consetrasenia: usuario.contrasenia, rol } }); // Este es solos si queremos que se vea el usuario y contraseña
     res.status(200).send({ message: "Inicio de sesión exitoso", user: { 
         ...usuario
-        , rol } }); // este es si queremos ver todos los datos del usuario
+        , }, rol }); // este es si queremos ver todos los datos del usuario
 };
 
 // };

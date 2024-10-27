@@ -10,6 +10,7 @@ import {
     Stack,
     Modal,
     InputGroup,
+    Image,
 } from "react-bootstrap";
 import axiosInstance, {
     handleAxiosError,
@@ -41,7 +42,13 @@ export default function AdminCourse() {
                             className="me-2"
                             onClick={() => mostrarCurso(item)} // item es la tarea
                         >
-                            Editar
+                            <Image
+                                aria-hidden
+                                src="/pencil.svg"
+                                alt="pen"
+                                width={18}
+                                height={18}
+                            />
                         </Button>
                         <Button
                             variant="outline-danger"
@@ -49,7 +56,13 @@ export default function AdminCourse() {
                             className="me-2"
                             onClick={() => eliminarCursos(item.codigo)} // item.id es el id de la tarea
                         >
-                            Eliminar
+                            <Image
+                                aria-hidden
+                                src="/trash.svg"
+                                alt="trash"
+                                width={18}
+                                height={18}
+                            />
                         </Button>
                     </>
                 );

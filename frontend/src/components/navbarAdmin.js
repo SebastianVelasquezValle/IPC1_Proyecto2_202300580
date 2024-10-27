@@ -9,6 +9,12 @@ import { useRouter } from "next/navigation";
 
 export default function NavbarAdmin() {
     const router = useRouter();
+
+    const cerrarSesion = () => {
+        document.cookie = "tipo_usuario=; max-age=0; path=/";
+        router.push("/login");
+    }
+
     return (
         <>
             <Navbar bg="dark" data-bs-theme="dark" className="fs-5">
@@ -22,7 +28,7 @@ export default function NavbarAdmin() {
                         <Nav.Link onClick={() => router.push('/admin/course')}>Cursos</Nav.Link>
                     </Nav>
                     <Nav className="justify-content-end">
-                        <Nav.Link onClick={() => router.push('/login')} >Cerrar Sesión</Nav.Link>
+                        <Nav.Link onClick={cerrarSesion} >Cerrar Sesión</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
