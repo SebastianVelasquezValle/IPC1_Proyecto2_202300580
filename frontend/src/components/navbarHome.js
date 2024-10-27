@@ -3,9 +3,8 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Image from 'react-bootstrap/Image';
-import { useRouter } from 'next/navigation';
-
+import Image from "react-bootstrap/Image";
+import { useRouter } from "next/navigation";
 
 export default function NavbarHome() {
     const router = useRouter();
@@ -13,7 +12,7 @@ export default function NavbarHome() {
         <>
             <Navbar bg="dark" data-bs-theme="dark">
                 <Container>
-                    <Navbar.Brand href="#home">
+                    <Navbar.Brand >
                         <Image
                             src="logo.jpg"
                             alt="Logo"
@@ -22,8 +21,8 @@ export default function NavbarHome() {
                             roundedCircle
                         />
                     </Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link href="./login">Login</Nav.Link>
+                    <Nav className="justify-content-end">
+                        <Nav.Link onClick={() => router.push('/login')} className="fs-3">Login</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>

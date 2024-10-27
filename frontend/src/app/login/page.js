@@ -1,14 +1,23 @@
 "use client";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Stack } from "react-bootstrap";
 
 export default function Login() {
     //const [codigo, setCodigo] = useState('');
     //const [contrasenia, setContrasenia] = useState('');
     return (
-        <Container className="justify-content-center align-items-center" >
-            <Row className="d-flex justify-content-md-center" >
-                <Col xs={6} md={4}>
+        <Container
+            fluid
+            className="vh-100 d-flex justify-content-center align-items-center bg-primary"
+        >
+            <Row className="p-5 rounded bg-white">
+                <Row>
+                    <Col>
+                        <h1 className="text-center">Iniciar sesion</h1>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
                     <Form>
                         <Form.Group
                             className="mb-3"
@@ -32,11 +41,15 @@ export default function Login() {
                                 placeholder="Ingrese su contraseña"
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Iniciar sesion
-                        </Button>
+                        <Stack className="col-md-9 mx-auto">
+                            <Button variant="primary" type="submit">
+                                Iniciar sesion
+                            </Button>
+                        </Stack>
                     </Form>
                 </Col>
+                </Row>
+                
             </Row>
         </Container>
     );

@@ -21,10 +21,10 @@ app.get("/", (req, res) => {
     res.send("Backend ejecutando correctamente");
 });
 // Endpoints de ejecución
-app.use("/api/login", auth); 
-app.use("/api/admin", adminRouter);
-app.use("/api/student", studentRouter);
-app.use("/api/teacher", teacherRouter);
+app.use("/login", auth); 
+app.use("/admin", adminRouter);
+app.use("/student", studentRouter);
+app.use("/teacher", teacherRouter);
 
 // Manejo de ruta cuando no se encuentre la ruta solicitada
 app.use((req, res) => {

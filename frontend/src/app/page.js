@@ -1,6 +1,6 @@
 "use client";
 //import "bootstrap/dist/css/bootstrap.min.css";
-import NavbarHome from "./components/navbar/navbarHome"; // importamos el componente NavbarHome, no se puede poner {NavbarHome} porque no se exportó así, se exportó como export default
+import NavbarHome from "../components/navbarHome"; // importamos el componente NavbarHome, no se puede poner {NavbarHome} porque no se exportó así, se exportó como export default
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 import Row from "react-bootstrap/Row";
