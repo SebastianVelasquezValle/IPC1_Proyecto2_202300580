@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 
 export default function NavbarAdmin() {
     const router = useRouter();
-
+    
     const cerrarSesion = () => {
         document.cookie = "tipo_usuario=; max-age=0; path=/";
+        document.cookie = "usuario=; max-age=0; path=/";
         router.push("/login");
     }
 

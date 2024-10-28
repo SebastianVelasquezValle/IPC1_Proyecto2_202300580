@@ -12,6 +12,8 @@ export default function TeacherLayout({ children }) {
     };
     return (
         <>
+        {/* bg-dark */}
+        <div className="justify-content-center align-items-center ">
             <div>
                 <Button
                     variant="outline-danger"
@@ -30,6 +32,8 @@ export default function TeacherLayout({ children }) {
                 </Button>
             </div>
             {children}
+        </div>
+            
         </>
     );
 }

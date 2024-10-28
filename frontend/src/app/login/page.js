@@ -42,17 +42,23 @@ export default function Login() {
             handleAxiosMsg(res.data.message, "success");
 
             //lo voy a comentar porque para mientras asi sigo trabajando
-            document.cookie = `tipo_usuario=${res.data.rol}; path=/;`;
-            // document.cookie = 'usuario=' + e.target.formBasicUsername.value;
+            //document.cookie = `tipo_usuario=${res.data.rol}; path=/;`; // Guardar el tipo de usuario en las cookies
+
+            
             
             if (res.data.rol === "admin") {
                 router.push("/admin");
             } else if (res.data.rol === "estudiante") {
-                router.push("/student");
+                console.log(res.data.user.carnet);
+                //document.cookie = `carnet=${res.data.carnet}; path=/;`;
+                router.push(`/student/${res.data.user.carnet}`);
             } else if (res.data.rol === "profesor") {
-                router.push("/teacher");
+                console.log(res.data.user.codigo);
+                //document.cookie = `codigo=${res.data.codigo}; path=/;`;
+                router.push(`/teacher/${res.data.user.codigo}`);
             } 
-
+            //document.cookie = `usuario=${res.data.user}; path=/;`;
+            
             
             e.target.reset(); // Limpiar los campos
         } catch (error) {

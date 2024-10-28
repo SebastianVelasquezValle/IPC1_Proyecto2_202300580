@@ -18,7 +18,6 @@ import axiosInstance, {
 } from "@/helpers/axiosConfig";
 import { CompactTable } from "@table-library/react-table-library/compact";
 
-
 export default function AdminCourse() {
     const fileInputRef = useRef(null);
     const [show, setShow] = useState(false);
@@ -182,7 +181,7 @@ export default function AdminCourse() {
             </Row>
             <br />
             <Row>
-            <Col>
+                <Col>
                     <div className="mb-2">
                         <InputGroup className="mb-3">
                             <Form.Control
