@@ -20,7 +20,6 @@ import {
 import { CompactTable } from "@table-library/react-table-library/compact";
 import { useRouter } from "next/navigation";
 
-
 export default function Profesor({ params }) {
     const router = useRouter();
 
@@ -53,8 +52,6 @@ export default function Profesor({ params }) {
         },
     ];
 
-
-
     const [cursos, setCursos] = useState({ nodes: [] });
 
     const codprofe = React.use(params).codprofe; // Nos sirve para desempaquetar el objeto params - esta es una forma de hacerlo
@@ -73,36 +70,45 @@ export default function Profesor({ params }) {
     };
 
     useEffect(() => {
-        //console.log(params.codprofe);
-        //loadCursos(params.codprofe);
-
         loadCursos();
     }, [codprofe]); // Se vuelve ejecuta cada vez que cambia el valor de codprofe
 
     return (
-        <Container >
+        <Container>
             <Row>
                 <Col>
-                    <h1 style={{ color: 'white' }}>Mis cursos Impartidos</h1>
+                <br />
+                    {/* style={{ color: "white" }} ese estilo tenia */}
+                    <h1>Mis cursos Impartidos</h1>
                 </Col>
             </Row>
-            <br />      
+            <br />
             {cursos.nodes.map((curso) => (
                 <Row key={curso.codigo}>
-                    <Col className="mb-2" >
-                        <Card  bg={'Secondary'.toLowerCase()} key={curso.codigo} className="text-center" data-bs-theme="dark">
+                    <Col className="mb-2">
+                        <Card
+                            bg={"Secondary".toLowerCase()}
+                            key={curso.codigo}
+                            className="text-center"
+                            data-bs-theme="dark"
+                        >
                             <Card.Header>Codigo: {curso.codigo}</Card.Header>
                             <Card.Body>
                                 <Card.Title>{curso.nombre}</Card.Title>
-                                <Card.Text >
+                                <Card.Text>
                                     {curso.alumnos} alumnos inscritos
                                 </Card.Text>
-                                <Button variant="primary" 
-                                onClick={()=>{
-                                    console.log(curso.codigo);
-                                    router.push(`/teacher/${codprofe}/${curso.codigo}`);
-                                } }
-                                >Ver</Button>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => {
+                                        console.log(curso.codigo);
+                                        router.push(
+                                            `/teacher/${codprofe}/${curso.codigo}`
+                                        );
+                                    }}
+                                >
+                                    Ver
+                                </Button>
                             </Card.Body>
                         </Card>
                     </Col>
