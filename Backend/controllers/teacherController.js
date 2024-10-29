@@ -496,8 +496,8 @@ exports.obtenerTopAlumnosMenor = (req, res) => {
         .sort((a, b) => a.promedio - b.promedio)
         .slice(0, 5);
 
-    console.log("Top alumnos: ", topAlumnosMenor);
-    res.status(200).send([]);
+    //console.log("Top alumnos: ", topAlumnosMenor);
+    res.status(200).send(topAlumnosMenor);
 };
 
 exports.actividades = actividades; // Exportamos el array de actividades

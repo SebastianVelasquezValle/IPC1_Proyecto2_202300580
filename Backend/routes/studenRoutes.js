@@ -21,5 +21,7 @@ router.get('/course/:carnet/:codigoProfesor/:codigoCourse', studentController.ob
 // Endpoint para descargar un archivo
 router.get('/course/download/:carnet/:codigoProfesor/:codigoCourse', studentController.download);
 
+// Endpoint para obtener las notas totales del estudiante de cada curso (para la grafica)
+router.get('/course/grafica/:carnet', studentController.obtenerNotasGrafica);
 
 module.exports = router;
