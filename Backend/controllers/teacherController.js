@@ -45,6 +45,10 @@ function promedio(nota) {
     return parseFloat(promedio.toFixed(2)); // Para que solo muestre 2 decimales
 }
 
+function obtenerNombreCurso(codigoCurso) {
+    const curso = cursos.find((curso) => parseInt(curso.codigo) === parseInt(codigoCurso));
+    return curso ? curso.nombre : "Curso no encontrado";
+}
 // Esta función calcular la cantidad de actividades que hay en el array del curso, si supera el limite de actividades (100), no se podra agregar mas actividades
 // let superoLimite = false;
 // function cantidadActividades(codigoCurso, codigoProfesor, cantidad) {
@@ -266,6 +270,7 @@ exports.obteneractividades_Advert = (req, res) => {
 // Endpoint para subir los alumnos del profesor
 exports.uploadAlumnos = (req, res) => {
     const { codigoCourse, codigoProfesor } = req.params;
+    const nombreCurso = obtenerNombreCurso(codigoCourse);
     // Verificamos si se ha subido un archivo
     if (!req.file) {
         return res.status(400).send({ message: "No se ha subido un archivo" });
@@ -317,6 +322,7 @@ exports.uploadAlumnos = (req, res) => {
                         curso: codigoCourse,
                         profesor: codigoProfesor,
                         nombre: estudiante ? estudiante.nombre : "Desconocido",
+                        CursoNombre: nombreCurso,
                     });
                 }
             });

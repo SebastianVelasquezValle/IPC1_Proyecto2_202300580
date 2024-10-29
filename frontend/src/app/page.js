@@ -90,7 +90,7 @@ export default function Home() {
                     <Row className="justify-content-md-center">
                         <Col md="auto">
                             <Card style={{ width: "18rem" }}>
-                                <Card.Img variant="top" src="2.jpeg" />
+                                <Card.Img variant="top" src="BMO.jpeg" />
                                 <Card.Body>
                                     <Card.Title>
                                         Sebastian Levi Velásquez Valle

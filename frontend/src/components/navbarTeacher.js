@@ -30,7 +30,7 @@ export default function NavbarTeacher({ params }) {
                             Cursos
                         </Nav.Link>
                         <Nav.Link
-                            //onClick={() => router.push(`/teacher/${codprofe}`)}
+                            onClick={() => router.push(`/teacher/${codprofe}/reporte`)}
                         >
                             Reportes
                         </Nav.Link>

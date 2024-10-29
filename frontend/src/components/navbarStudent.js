@@ -22,18 +22,18 @@ export default function NavbarStudent({ params }) {
         <>
             <Navbar bg="dark" data-bs-theme="dark" className="fs-5">
                 <Container>
-                    <Navbar.Brand className="fs-3">Profesor</Navbar.Brand>
+                    <Navbar.Brand className="fs-3">Estudiante</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link
                             onClick={() =>
-                                router.push(`/teacher/${codstudent}`)
+                                router.push(`/student/${codstudent}`)
                             }
                         >
                             Cursos
                         </Nav.Link>
                         <Nav.Link
                             onClick={() =>
-                                router.push(`/teacher/${codstudent}`)
+                                router.push(`/student/${codstudent}/reporte`)
                             }
                         >
                             Reportes

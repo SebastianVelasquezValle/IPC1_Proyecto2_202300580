@@ -62,7 +62,7 @@ export default function Profesor({ params }) {
             const response = await axiosInstance.get(
                 `/teacher/home/${codprofe}`
             );
-            //console.log(response.data);
+            console.log(response.data);
             setCursos({ nodes: response.data });
         } catch (error) {
             handleAxiosError(error);
@@ -77,7 +77,7 @@ export default function Profesor({ params }) {
         <Container>
             <Row>
                 <Col>
-                <br />
+                    <br />
                     {/* style={{ color: "white" }} ese estilo tenia */}
                     <h1>Mis cursos Impartidos</h1>
                 </Col>
