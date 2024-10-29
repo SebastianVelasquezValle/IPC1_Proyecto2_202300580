@@ -13,9 +13,6 @@ const actividades = []; // este es el array donde se guardaran las actividades y
 // Variable temporal para almacenar los alumnos
 const alumnosCarnet = []; // el array alumnos contendra todos los datos del estudiante, y le agregamos el codigo del curso y el profesor
 
-// variable temporal para almacenar 
-// const alumnosInscritos = []; // este array contendra los alumnos inscritos en el curso, y mostrara el detalle de las actividades cargadas y los puntos acumulados 
-
 function incrementarAlumnos(codigoCurso, codigoProfesor, cantidad) {
     // Buscamos el curso en el array 'cursos'
     const curso = cursos.find(
@@ -56,9 +53,8 @@ function promedio(nota) {
 //             actividad.curso === codigoCurso && actividad.profesor === codigoProfesor
 //     );
 //     return actividadesCurso.length;
-    
-// } // posiblemente no se necesite esta funcion
 
+// } // posiblemente no se necesite esta funcion
 
 // Endpoint para ver los cursos que imparte el profesor
 exports.obtenerCursos = (req, res) => {
@@ -110,7 +106,7 @@ exports.uploadActvidades = (req, res) => {
                 const existe = actividades.some(
                     (a) =>
                         a.nombre === actividad.nombre &&
-                        a.profesor === actividad.profesor && 
+                        a.profesor === actividad.profesor &&
                         a.curso === codigoCourse
                 );
 
@@ -119,8 +115,8 @@ exports.uploadActvidades = (req, res) => {
                     //actividades.push(actividad);
                     actividades.push({
                         ...actividad,
-                        curso: codigoCourse
-                    })
+                        curso: codigoCourse,
+                    });
                 } else {
                     // Si existe, actualizamos los datos
                     const actividadIndex = actividades.findIndex(
@@ -131,7 +127,7 @@ exports.uploadActvidades = (req, res) => {
                     );
                     actividades[actividadIndex] = {
                         ...actividad,
-                        curso: codigoCourse
+                        curso: codigoCourse,
                     };
                 }
 
@@ -164,22 +160,49 @@ exports.uploadActvidades = (req, res) => {
     });
 };
 
-// Endpoint para obtener las actividades del profesor
+// Endpoint para obtener las actividades del profesor, solo contara a los alumnos que esten inscritos en el curso, esto se comprueba con el array alumnosCarnet (este es el que tiene los alumnos inscritos)
 exports.obteneractividades = (req, res) => {
     const { codigoProfesor, codigoCourse } = req.params;
     // Buscamos las actividades del profesor
     const actividadesProfesor = actividades.filter(
-        (actividad) => actividad.profesor === codigoProfesor && parseInt(actividad.curso) === parseInt(codigoCourse)
+        (actividad) =>
+            actividad.profesor === codigoProfesor &&
+            parseInt(actividad.curso) === parseInt(codigoCourse)
     );
+    //console.log(actividadesProfesor);
+    // console.log("Actividades antes de filtrar");
+    // actividadesProfesor.forEach((actividad) => {
+    //     if (!actividad.notas) {
+    //         actividad.notas = { notae: [] };
+    //     }
+    //     console.log(actividad.notas);
+    // });
 
     // Para mostrar los datos necesario y no todo el array usamos for each y lo guardamos en un nuevo array
     const actividadesDatos = [];
     actividadesProfesor.forEach((actividad) => {
+        //Filtamos los alumnos inscritos en el curso
+        const notasAlumnosInscritos = actividad.notas.filter((nota) =>
+            alumnosCarnet.some(
+                (alumno) => parseInt(alumno.carnet) === parseInt(nota.carnet)
+            )
+        );
+        //console.log(notasAlumnosInscritos);
+        // console.log("Actividades despues de filtrar");
+        // console.log(notasAlumnosInscritos);
+
         let promedioActividad = 0;
-        const notas = actividad.notas.map((nota) => nota.nota);
-        //console.log(notas);
-        promedioActividad = promedio(notas);
-        //console.log(promedioActividad);
+        if (notasAlumnosInscritos.length > 0) {
+            const notas = notasAlumnosInscritos.map((nota) => nota.nota);
+            //console.log(notas);
+            promedioActividad = promedio(notas);
+            //console.log(promedioActividad);
+        }
+
+        // const notas = actividad.notas.map((nota) => nota.nota);
+        // //console.log(notas);
+        // promedioActividad = promedio(notas);
+        // //console.log(promedioActividad);
 
         actividadesDatos.push({
             nombre: actividad.nombre,
@@ -198,7 +221,9 @@ exports.obteneractividades = (req, res) => {
     // Retornamos las actividades
     //res.status(200).send(actividadesProfesor);
     //console.log(actividades);
-    res.status(200).send(actividadesDatos);
+    res.status(200).send(actividadesDatos); // original
+    //res.status(200).send(alumnosCarnet);
+    //res.status(200).send(actividades);
 };
 
 // otro obtener actividades, pero con un status 404 (opcional)
@@ -280,7 +305,8 @@ exports.uploadAlumnos = (req, res) => {
                         (e) => parseInt(e.carnet) === parseInt(alumno.carnet)
                     );
 
-                    if (!estudiante) { // Si no se encuentra el estudiante
+                    if (!estudiante) {
+                        // Si no se encuentra el estudiante
                         //return res.status(404).send({ message: "Estudiante no encontrado" });
                         return; // Si no se encuentra el estudiante, no se agregara al array
                     }
@@ -290,7 +316,7 @@ exports.uploadAlumnos = (req, res) => {
                         carnet: parseInt(alumno.carnet),
                         curso: codigoCourse,
                         profesor: codigoProfesor,
-                        nombre: estudiante ? estudiante.nombre : "Desconocido"
+                        nombre: estudiante ? estudiante.nombre : "Desconocido",
                     });
                 }
             });
@@ -325,7 +351,7 @@ exports.uploadAlumnos = (req, res) => {
                         .send({ message: "Error al eliminar el archivo" });
                 }
             });
-            
+
             return res.send({ message: "Archivo procesado correctamente" });
         } catch (error) {
             return res
@@ -346,6 +372,132 @@ exports.obteneralumnos = (req, res) => {
 
     // Retornamos los alumnos
     res.status(200).send(alumnosFiltrados);
+};
+
+// Endpoint para obtener los 5 mejores alumnos del curso(esto es para los reportes)
+exports.obtenerTopAlumnosMayor = (req, res) => {
+    const { codigoProfesor, codigoCourse } = req.params;
+    const actividadesProfesor = actividades.filter(
+        // Buscamos las actividades del profesor
+        (actividad) =>
+            actividad.profesor === codigoProfesor &&
+            parseInt(actividad.curso) === parseInt(codigoCourse)
+    );
+
+    if (actividadesProfesor.length === 0) {
+        return res
+            .status(404)
+            .send({ message: "No se encontraron actividades" });
+    }
+
+    const notasAlumnos = [];
+
+    actividadesProfesor.forEach((actividad) => {
+        const notasAlumnosInscritos = actividad.notas.filter((nota) =>
+            alumnosCarnet.some(
+                (alumno) => parseInt(alumno.carnet) === parseInt(nota.carnet)
+            )
+        );
+        notasAlumnos.push(...notasAlumnosInscritos);
+    });
+
+    const notasusuario = notasAlumnos.reduce((acc, nota) => {
+        if (!acc[nota.carnet]) {
+            acc[nota.carnet] = [];
+        }
+        acc[nota.carnet].push(nota.nota);
+        //console.log("Acumulador en proceso:", acc);
+        return acc;
+    }, {});
+
+    //console.log("Nota de los usuarios: ", notasusuario);
+
+    const promedios = Object.keys(notasusuario).map((carnet) => {
+        const notas = notasusuario[carnet];
+        const promedio =
+            notas.length > 0
+                ? notas.reduce((a, b) => a + b, 0) / notas.length
+                : 0;
+
+        const alumno = alumnosCarnet.find(
+            (alumno) => alumno.carnet === parseInt(carnet)
+        );
+        return {
+            carnet: carnet,
+            nombre: alumno ? alumno.nombre : "Desconocido",
+            promedio: parseFloat(promedio.toFixed(2)),
+        };
+    });
+    // Ordenamos los promedios de mayor a menor
+    const topAlumnos = promedios
+        .sort((a, b) => b.promedio - a.promedio)
+        .slice(0, 5);
+
+    //console.log("Top alumnos: ", topAlumnos);
+
+    res.status(200).send(topAlumnos);
+};
+
+// Endpoint para obtener los 5 peores alumnos del curso(esto es para los reportes)
+exports.obtenerTopAlumnosMenor = (req, res) => {
+    const { codigoProfesor, codigoCourse } = req.params;
+    const actividadesProfesor = actividades.filter(
+        // Buscamos las actividades del profesor
+        (actividad) =>
+            actividad.profesor === codigoProfesor &&
+            parseInt(actividad.curso) === parseInt(codigoCourse)
+    );
+
+    if (actividadesProfesor.length === 0) {
+        return res
+            .status(404)
+            .send({ message: "No se encontraron actividades" });
+    }
+
+    const notasAlumnos = [];
+
+    actividadesProfesor.forEach((actividad) => {
+        const notasAlumnosInscritos = actividad.notas.filter((nota) =>
+            alumnosCarnet.some(
+                (alumno) => parseInt(alumno.carnet) === parseInt(nota.carnet)
+            )
+        );
+        notasAlumnos.push(...notasAlumnosInscritos);
+    });
+
+    const notasusuario = notasAlumnos.reduce((acc, nota) => {
+        if (!acc[nota.carnet]) {
+            acc[nota.carnet] = [];
+        }
+        acc[nota.carnet].push(nota.nota);
+        //console.log("Acumulador en proceso:", acc);
+        return acc;
+    }, {});
+
+    const promedios = Object.keys(notasusuario).map((carnet) => {
+        const notas = notasusuario[carnet];
+        const promedio =
+            notas.length > 0
+                ? notas.reduce((a, b) => a + b, 0) / notas.length
+                : 0;
+
+        const alumno = alumnosCarnet.find(
+            (alumno) => alumno.carnet === parseInt(carnet)
+        );
+        return {
+            carnet: carnet,
+            nombre: alumno ? alumno.nombre : "Desconocido",
+            promedio: parseFloat(promedio.toFixed(2)),
+        };
+    });
+
+    // Ordenamos los promedios de menor a mayor
+    const topAlumnosMenor = promedios
+        .sort((a, b) => a.promedio - b.promedio)
+        .slice(0, 5);
+
+    console.log("Top alumnos: ", topAlumnosMenor);
+    res.status(200).send([]);
 };
 
 exports.actividades = actividades; // Exportamos el array de actividades

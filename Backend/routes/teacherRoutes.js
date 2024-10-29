@@ -24,7 +24,7 @@ router.post('/course/actividad/:codigoProfesor/:codigoCourse', upload.single('fi
 router.get('/course/actividad/:codigoProfesor/:codigoCourse', teacherController.obteneractividades);
 
 // Endpoint para obtener las actividades del profesor (con advertencia)(opcional)
-router.get('/course/actividad/:codigo/a', teacherController.obteneractividades_Advert);
+//router.get('/course/actividad/:codigo/a', teacherController.obteneractividades_Advert);
 
 // Endpoint para subir los alumnos del profesor
 router.post('/course/alumno/:codigoProfesor/:codigoCourse', upload.single('file'), teacherController.uploadAlumnos);
@@ -32,8 +32,11 @@ router.post('/course/alumno/:codigoProfesor/:codigoCourse', upload.single('file'
 // Endpoint para obtener los alumnos del profesor
 router.get('/course/alumno/:codigoProfesor/:codigoCourse', teacherController.obteneralumnos);
 
-// Endpoint para obtener los 5 mejores alumnos del curso y los 5 peores (esto es para los reportes)
-//router.get('/course/alumno/:codigoProfesor/:codigoCourse/top', teacherController.obtenerTopAlumnos);
+// Endpoint para obtener los 5 mejores alumnos del curso (esto es para los reportes)
+router.get('/course/grafica/:codigoProfesor/:codigoCourse/topMayor', teacherController.obtenerTopAlumnosMayor);
+
+// Endpoint para obtener los 5 peores alumnos del curso (esto es para los reportes)
+router.get('/course/grafica/:codigoProfesor/:codigoCourse/topMenor', teacherController.obtenerTopAlumnosMenor);
 
 
 module.exports = router;
